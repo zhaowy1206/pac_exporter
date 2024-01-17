@@ -13,7 +13,8 @@ type MetricConfig struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Type        string `json:"type"`
-	ScriptName  string `json:"scriptName"`
+	ScriptName  string `json:"script_name"`
+	Unit        string `json:"unit"`
 }
 
 type Config struct {

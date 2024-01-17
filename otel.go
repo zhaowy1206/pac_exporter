@@ -90,10 +90,10 @@ func newMeterProvider(res *resource.Resource) (*metric.MeterProvider, error) {
 	return meterProvider, nil
 }
 
-func serveMetrics() {
-	log.Printf("serving metrics at localhost:9200/metrics")
+func serveMetrics(port string) {
+	log.Printf("serving metrics at localhost:%s/metrics", port)
 	http.Handle("/metrics", promhttp.Handler())
-	err := http.ListenAndServe(":9200", nil) //nolint:gosec // Ignoring G114: Use of net/http serve function that has no support for setting timeouts.
+	err := http.ListenAndServe(":"+port, nil) //nolint:gosec // Ignoring G114: Use of net/http serve function that has no support for setting timeouts.
 	if err != nil {
 		fmt.Printf("error serving http: %v", err)
 		return
