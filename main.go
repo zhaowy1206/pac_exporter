@@ -21,21 +21,24 @@ var (
 )
 
 func main() {
-	if len(os.Args) < 3 {
-		fmt.Println("Usage: program <command> <port>")
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: program <command> [port]")
 		return
 	}
 
 	command := os.Args[1]
-	port := os.Args[2]
 
 	switch command {
 	case "add":
-		err := AddMetricConfigInteractive("pac_exporter.json")
-		if err != nil {
+		if err := AddMetricConfigInteractive("pac_exporter.json"); err != nil {
 			log.Fatalf("Failed to add metric: %s", err)
 		}
 	case "run":
+		if len(os.Args) < 3 {
+			fmt.Println("Usage: program run <port>")
+			return
+		}
+		port := os.Args[2]
 		run(port)
 	default:
 		fmt.Println("Unknown command. Use 'add' to add a new metric or 'run' to start hosting metrics.")
@@ -89,7 +92,7 @@ func run(port string) (err error) {
 	}()
 
 	// Initialize the metrics
-	err = InitMetrics(meter, "config.json")
+	err = InitMetrics(meter, "pac_exporter.json")
 	if err != nil {
 		log.Fatalf("Failed to initialize metrics: %v", err)
 	}
